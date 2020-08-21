@@ -33,8 +33,8 @@ def client_to_server():
 @app.route('/index')
 def index():
 
-    if request.cookies.get('CTSESSION') in session:
-        return "Ok"
+    if 'username' in session:
+        return 'Ok'
     else:
         return "You are not logged in <br><a href = '/login'>" + "click here to log in</a>"
 
@@ -42,10 +42,9 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session[request.form['username']] = 'admin'
+        session['username'] = request.form['username']
         # todo: get request to database-ms
         response = redirect(url_for('index'))
-        response.set_cookie('CTSESSION', request.form['username'])
         return response
     return '''
     
