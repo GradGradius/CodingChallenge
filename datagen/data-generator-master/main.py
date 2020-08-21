@@ -2,9 +2,13 @@ from flask import Flask, Response
 from flask_cors import CORS
 import webServiceStream
 from RandomDealData import *
+import mysql.connector
 
 app = Flask(__name__)
 CORS(app)
+
+cnx = mysql.connector.connect(host='localhost', database='db_grad_cs_1917', user='root',password='ppp', port='3306')
+
 
 
 @app.route('/')
@@ -23,6 +27,35 @@ def stream():
 def sse_stream():
      return webServiceStream.sse_stream()
 
+@app.route('/anonymous_users_get')
+def anonymous_users_get():
+ 
+    cursor = cnx.cursor(buffered=True)
+    query = ("SELECT * FROM anonymous_users")
+    cursor.execute(query)
+    r = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
+    cursor.close()
+    cnx.close()
+    res = ''
+    for s in r:
+        res += str(s) + '\n'
+    return res
+
+@app.route('/anonymous_users_post')
+def anonymous_users_post():
+    cursor = cnx.cursor()
+    cursor = cnx.cursor(buffered=True)
+    query = ("INSERT INTO anonymous_users VALUES (%(anonymous_user_id)s, %(anonymous_user_pwd)s)")
+    data = {
+        "anonymous_user_id" : "1234567",
+        "anonymous_user_pwd": "1234567"
+    }
+    cursor.execute(query, data)
+    cursor.close()
+    cnx.commit()
+    cnx.close()
+    return 'success'
+
 
 def bootapp():
     #global rdd 
@@ -33,3 +66,4 @@ def bootapp():
 
 if __name__ == "__main__":
       bootapp()
+    
