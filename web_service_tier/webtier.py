@@ -5,22 +5,27 @@ import requests
 import time
 
 app = Flask(__name__)
-#app.register_blueprint(sse, url_prefix='/stream')
+# app.register_blueprint(sse, url_prefix='/stream')
 CORS(app)
+
 
 @app.route('/deals')
 def forwardStream():
     r = requests.get('http://localhost:8080/streamTest', stream=True)
+
     def eventStream():
-            for line in r.iter_lines( chunk_size=1):
-                if line:
-                    yield 'data:{}\n\n'.format(line.decode())
+        for line in r.iter_lines(chunk_size=1):
+            if line:
+                yield 'data:{}\n\n'.format(line.decode())
+
     return Response(eventStream(), mimetype="text/event-stream")
+
 
 @app.route('/client/testservice')
 def client_to_server():
     r = requests.get('http://localhost:8080/testservice')
     return Response(r.iter_lines(chunk_size=1), mimetype="text/json")
+
 
 @app.route('/')
 @app.route('/index')
@@ -34,8 +39,10 @@ def get_message():
     s = time.ctime(time.time())
     return s
 
+
 def bootapp():
     app.run(port=8090, threaded=True, host=('0.0.0.0'))
 
+
 if __name__ == '__main__':
-     bootapp()
+    bootapp()
