@@ -43,6 +43,7 @@ def index():
 def login():
     if request.method == 'POST':
         session[request.form['username']] = 'admin'
+        # todo: get request to database-ms
         response = redirect(url_for('index'))
         response.set_cookie('CTSESSION', request.form['username'])
         return response
@@ -50,6 +51,7 @@ def login():
     
     <form action = "" method = "post">
       <p><input type = text name = username></input></p>
+      <p><input type = text name = password></input></p>
       <p><input type = submit value = Login /></p>
     </form>    
     '''
