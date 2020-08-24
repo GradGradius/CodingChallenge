@@ -8,8 +8,6 @@ import mysql.connector
 app = Flask(__name__)
 CORS(app)
 
-#cnx = mysql.connector.connect(host='localhost', database='db_grad_cs_1917', user='root',password='ppp', port='3306')
-
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'ppp'
@@ -37,26 +35,21 @@ def sse_stream():
 
 @app.route('/login', methods = ['POST'])
 def login():
-    print("req: ", request.data)
     content = request.get_json()
-    print("CONTENT: ", content)
-    #id = request.args.get()
     cursor = mysql.connection.cursor()
     
     data = {
         "anonymous_user_id" : content['username'],
         "anonymous_user_pwd": content['password']
     }
-    print("DATA: ", data)
+    
     query = "SELECT * FROM anonymous_users WHERE anonymous_user_id = \"{0}\" AND anonymous_user_pwd = \"{1}\"".format(data["anonymous_user_id"], data["anonymous_user_pwd"])
-    #query = ("SELECT * FROM anonymous_users WHERE anonymous_user_id = \"123\" AND anonymous_user_pwd = \"123\"")
     cursor.execute(query)
-    #r = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
     mysql.connection.commit()
     cursor.close()
     if cursor.rowcount == 0:
-        return jsonify(False)
-    return jsonify(True)
+        return jsonify(0)
+    return jsonify(1)
 
 
 def bootapp():
