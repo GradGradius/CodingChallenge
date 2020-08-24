@@ -16,8 +16,17 @@ class Login extends Component {
         username:"",
         password:""
       }
+      this.fun = this.fun.bind(this);
     }
-
+   fun = (response) => {
+    if (response.data ) {
+        this.context.setAuth(true);
+    }
+//    if (response.data  && response.data.code === 200) {
+//        this.context.setAuth(true);
+//        console.log("true")
+//    }
+   }
 
  handleClick(event){
     Cookies.set("user","loginTrue");
@@ -28,14 +37,8 @@ class Login extends Component {
          "password":this.state.password
      }
      axios.post(apiBaseUrl+'login', payload)
-     .then(function (response) {
-            console.log(response.data);
+     .then(this.fun);
 
-
-//            if response.data == true {
-//              setAuth(true)
-//            }
-     })
 }
 
 render() {
@@ -68,9 +71,6 @@ render() {
   }
 }
 const style = {
-  display: 'flex',  
-  // justifyContent:'center', 
-  // alignItems:'center',
   margin: 15,
 };
 export default Login;
