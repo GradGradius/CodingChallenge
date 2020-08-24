@@ -10,17 +10,6 @@ import Dataflow from './pages/Dataflow';
 function App() {
     const [auth,setAuth] = React.useState(false);
 
-    const readCookie = () =>{
-      const user = Cookies.get("user");
-      if (user){
-        setAuth(true);
-      } 
-    }
-    
-    React.useEffect(() =>{
-      readCookie();
-    }, [])
-
     return (
       <AuthApi.Provider value={{auth,setAuth}}>
         <Router>

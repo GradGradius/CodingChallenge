@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, session, redirect, url_for, request
+from flask import Flask, render_template, Response, session, redirect, url_for, request, jsonify, make_response
 from flask_sse import sse
 from flask_cors import CORS
 import requests
@@ -42,18 +42,18 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session['username'] = request.form['username']
+        session['username'] = request.json['username']
+        print(session['username'])
+
         # todo: get request to database-ms
-        response = redirect(url_for('index'))
-        return response
-    return '''
-    
-    <form action = "" method = "post">
-      <p><input type = text name = username></input></p>
-      <p><input type = text name = password></input></p>
-      <p><input type = submit value = Login /></p>
-    </form>    
-    '''
+        # response = redirect(url_for('index'))
+        # return response
+
+        resp = make_response()
+        resp.set_cookie("session", session)
+        resp.set_bodie(jsonify(True))
+        return resp
+    return jsonify(False)
 
 
 def get_message():
