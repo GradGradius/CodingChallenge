@@ -39,8 +39,9 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        bd_response = requests.post('http://localhost:8080/login', request.json)
-        if (bd_response):
+        bd_response = requests.post('http://localhost:8080/login', json=request.json)
+        print(type(bd_response.text))
+        if int(bd_response.text) != 0:
             userList.append(request.json['username'])
             return jsonify(True)
     return jsonify(False)

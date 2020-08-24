@@ -9,11 +9,11 @@ class Dataflow extends Component {
     render() {
         return (
             <div>
-//              <ul>
-//                {["Alex", "John", "Jaz", "fedrik", "missali"].map((user, idx) => {
-//                  return <li key={idx}>{user}</li>;
-//                })}
-//              </ul>
+            <ul>
+                {["Alex", "John", "Jaz", "fedrik", "missali"].map((user, idx) => {
+                  return <li key={idx}>{user}</li>;
+                })}
+              </ul>
               <button label="Click!" onClick={(event)=>{
                   this.context.setAuth(false)
                   Cookies.remove("user")
