@@ -37,7 +37,7 @@ const ProtectedRoute = ({auth, component:Component, ...rest}) => {
   return(
     <Route 
       {... rest}
-      render ={()=>auth?(
+      render ={()=>auth ? (
         <Component/>
       ): (
         <Redirect to="/login"/>
@@ -49,7 +49,7 @@ const ProtectedLogin = ({auth, component:Component, ...rest}) => {
   return(
     <Route 
       {... rest}
-      render ={()=>!auth?(
+      render ={()=>!auth ? (
         <Component/>
       ): (
         <Redirect to="/dataflow"/>
