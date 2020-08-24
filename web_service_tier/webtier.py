@@ -5,11 +5,9 @@ import requests
 import time
 
 app = Flask(__name__)
-# app.register_blueprint(sse, url_prefix='/stream')
 CORS(app)
 
-app.secret_key = 'aasdkaka0a0)I(838 28 -0(*-)_:":?:JL:H@'
-
+userList = []
 
 @app.route('/deals')
 def forwardStream():
@@ -32,8 +30,7 @@ def client_to_server():
 @app.route('/')
 @app.route('/index')
 def index():
-
-    if 'username' in session:
+    if request.json['username'] in userList:
         return 'Ok'
     else:
         return "You are not logged in <br><a href = '/login'>" + "click here to log in</a>"
@@ -42,17 +39,10 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session['username'] = request.json['username']
-        print(session['username'])
-
-        # todo: get request to database-ms
-        # response = redirect(url_for('index'))
-        # return response
-
-        resp = make_response()
-        resp.set_cookie("session", session)
-        resp.set_bodie(jsonify(True))
-        return resp
+        bd_response = requests.post('http://localhost:8080/login', request.json)
+        if (bd_response):
+            userList.append(request.json['username'])
+            return jsonify(True)
     return jsonify(False)
 
 
