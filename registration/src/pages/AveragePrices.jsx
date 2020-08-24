@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import mockedData from './mockAverage'
 import {exportedUserName} from './Login'
+import axios from 'axios'
 
 
 const AveragePrices = () => {
@@ -16,15 +17,21 @@ const AveragePrices = () => {
       "user_id": exportedUserName
     }
 
-    const handleClick = () => {
-        fetch(`localhost:5000/average`, {
-          method: "GET",
-          body: JSON.stringify(creds),
-          headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => console.log(response.json()))
+    async function handleClick() {
+        // fetch(`localhost:5000/average`, {
+        //   method: "GET",
+        //   body: JSON.stringify(creds),
+        //   headers: {
+        //     "Content-Type": "application/json"
+        // }
+        const response =
+        await axios.get("http://localhost:5000/average", { params : creds }
+        );
+        console.log(response.data);
+        setData(response.data);
+
+    //})
+    //.then(response => console.log(response.json()))
   }
 
     const handleEndDateChange = e => {
@@ -39,27 +46,27 @@ const AveragePrices = () => {
     <label htmlFor="start">Start date:</label>
     <input onChange={handleStartDateChange} type="date" id="start" 
        value="2020-08-22"
-       min="2018-01-01" max="2020-08-24"/>
+       min="2010-01-01" max="2022-08-25"/>
 
     <label htmlFor="start">End date:</label>
     <input onChange={handleEndDateChange} type="date" id="end" 
        value="2020-08-22"
-       min="2018-01-01" max="2020-08-24"/>
+       min="2010-01-01" max="2022-08-25"/>
     <button onClick={handleClick}>See Average Prices</button>
 
     <table>
     <tbody>
     <tr>
-      <th>Instrument</th>
-      <th>Average Sell Price</th>
-      <th>Average Buy Price</th>
+      <th>Instrument ID</th>
+      <th>Type of deal</th>
+      <th>Average Price</th>
     </tr>
-    {data.forEach(el => {
+    {data.map(el => {
       return(
         <tr>
-          <th>{el.instrument}</th>
-          <th>{el.averageSell}</th>
-          <th>{el.averageBuy}</th>
+          <th>{el.deal_instrument_id}</th>
+          <th>{el.deal_type}</th>
+          <th>{el.average}</th>
         </tr>
       )
     })}

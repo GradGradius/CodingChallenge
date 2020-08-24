@@ -24,6 +24,7 @@ class Login extends Component {
    fun = (response) => {
     if (response.data ) {
         this.context.setAuth(true);
+        exportedUserName = this.state.username;
     }
 //    if (response.data  && response.data.code === 200) {
 //        this.context.setAuth(true);
@@ -41,7 +42,6 @@ class Login extends Component {
      }
      axios.post(apiBaseUrl+'login', payload)
      .then(this.fun);
-
 }
 
 render() {
@@ -55,8 +55,8 @@ render() {
               hintText="Enter your Username"
               floatingLabelText="Username"
               onChange = {(event,newValue) => {
-                this.setState(state => ({username:newValue}));
-                exportedUserName = this.state.userName;
+                this.setState({username:newValue});
+                //exportedUserName = this.state.username;
               }}
             />
             <br/>
