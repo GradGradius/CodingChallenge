@@ -1,4 +1,4 @@
-from flask import Flask, Response, request
+from flask import Flask, Response, request, jsonify
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 import webServiceStream
@@ -37,24 +37,26 @@ def sse_stream():
 
 @app.route('/login', methods = ['POST'])
 def login():
+    print("req: ", request.data)
     content = request.get_json()
-    
+    print("CONTENT: ", content)
     #id = request.args.get()
     cursor = mysql.connection.cursor()
     
     data = {
-        "anonymous_user_id" : content.name,
-        "anonymous_user_pwd": content.password
+        "anonymous_user_id" : content['username'],
+        "anonymous_user_pwd": content['password']
     }
-
-    query = ("SELECT * FROM anonymous_users WHERE anonymous_user_id = %s AND anonymous_user_pwd = %s", (data["anonymous_user_id"], data["anonymous_user_pwd"]))
+    print("DATA: ", data)
+    query = "SELECT * FROM anonymous_users WHERE anonymous_user_id = \"{0}\" AND anonymous_user_pwd = \"{1}\"".format(data["anonymous_user_id"], data["anonymous_user_pwd"])
+    #query = ("SELECT * FROM anonymous_users WHERE anonymous_user_id = \"123\" AND anonymous_user_pwd = \"123\"")
     cursor.execute(query)
     #r = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
     mysql.connection.commit()
     cursor.close()
     if cursor.rowcount == 0:
-        return None
-    return 200
+        return jsonify(False)
+    return jsonify(True)
 
 
 def bootapp():
