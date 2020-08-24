@@ -41,11 +41,25 @@ def login():
     if request.method == 'POST':
         bd_response = requests.post('http://localhost:8080/login', json=request.json)
         print(type(bd_response.text))
-        if int(bd_response.text) != 0:
+        if int(bd_response.text) != -1:
             userList.append(request.json['username'])
             return jsonify(True)
     return jsonify(False)
 
+
+@app.route('/average', methods=['GET'])
+def average():
+    date_from = request.args.get('date_from')
+    date_to = request.args.get('date_to')
+    user_id = request.args.get('user_id')
+
+    if user_id not in userList:
+       return "Unknown user"
+
+    # TODO: check roles
+
+    bd_response = requests.get('http://localhost:8080/average', params={'date_from' : date_from, 'date_to' : date_to})
+    return bd_response.text
 
 def get_message():
     """this could be any function that blocks until data is ready"""

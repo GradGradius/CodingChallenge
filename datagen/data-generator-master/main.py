@@ -48,8 +48,32 @@ def login():
     mysql.connection.commit()
     cursor.close()
     if cursor.rowcount == 0:
-        return jsonify(0)
+        return jsonify(-1)
     return jsonify(1)
+
+
+@app.route('/average', methods = ['GET'])
+def average():
+    date_from = request.args.get('date_from')
+    date_to = request.args.get('date_to')
+    
+    cursor = mysql.connection.cursor()
+    query = '''select deal_instrument_id, deal_type, sum(deal_amount * deal_quantity) / sum(deal_quantity) as average
+    from deal
+    where DATE(deal_time) between DATE("{0}") and DATE("{1}")
+    group by deal_instrument_id, deal_type'''.format(date_from, date_to)
+
+    print(query)
+
+    cursor.execute(query)
+    r = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
+    mysql.connection.commit()
+    cursor.close()
+
+    if cursor.rowcount == 0:
+        return jsonify(-1)
+    return jsonify(r)
+
 
 
 def bootapp():
