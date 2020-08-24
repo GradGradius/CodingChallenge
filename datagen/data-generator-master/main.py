@@ -35,52 +35,26 @@ def stream():
 def sse_stream():
      return webServiceStream.sse_stream()
 
-@app.route('/anonymous_users_get')
-def anonymous_users_get():
- 
-    cursor = cnx.cursor(buffered=True)
-    query = ("SELECT * FROM anonymous_users")
-    cursor.execute(query)
-    r = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
-    cursor.close()
-    cnx.close()
-    res = ''
-    for s in r:
-        res += str(s) + '\n'
-    return res
-
-@app.route('/anonymous_users_post')
-def anonymous_users_post():
-    cursor = cnx.cursor()
-    cursor = cnx.cursor(buffered=True)
-    query = ("INSERT INTO anonymous_users VALUES (%(anonymous_user_id)s, %(anonymous_user_pwd)s)")
-    data = {
-        "anonymous_user_id" : "1234567",
-        "anonymous_user_pwd": "1234567"
-    }
-    cursor.execute(query, data)
-    cursor.close()
-    cnx.commit()
-    cnx.close()
-    return 'success'
-
-@app.route('/login')
+@app.route('/login', methods = ['POST'])
 def login():
-
+    content = request.get_json()
+    
+    #id = request.args.get()
     cursor = mysql.connection.cursor()
-    query = ("SELECT * FROM anonymous_users")
+    
     data = {
-        "anonymous_user_id" : "1234567",
-        "anonymous_user_pwd": "1234567"
+        "anonymous_user_id" : content.name,
+        "anonymous_user_pwd": content.password
     }
+
+    query = ("SELECT * FROM anonymous_users WHERE anonymous_user_id = %s AND anonymous_user_pwd = %s", (data["anonymous_user_id"], data["anonymous_user_pwd"]))
     cursor.execute(query)
+    #r = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
     mysql.connection.commit()
-    r = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
     cursor.close()
-    res = ''
-    for s in r:
-        res += str(s) + '\n'
-    return res
+    if cursor.rowcount == 0:
+        return None
+    return 200
 
 
 def bootapp():
