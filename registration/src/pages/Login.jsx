@@ -5,8 +5,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import AuthApi from '../contexts/AuthApi';
+import AuthApi from '../contexts/AuthApi'
+import styles from './Login.module.css'
 
+
+export let exportedUserName = '';
 class Login extends Component {
     static contextType = AuthApi;
 
@@ -43,7 +46,7 @@ class Login extends Component {
 
 render() {
     return (
-      <div>
+      <div className={styles.loginFrame}>
         <MuiThemeProvider>
 
           <div>
@@ -51,7 +54,10 @@ render() {
             <TextField
               hintText="Enter your Username"
               floatingLabelText="Username"
-              onChange = {(event,newValue) => this.setState({username:newValue})}
+              onChange = {(event,newValue) => {
+                this.setState(state => ({username:newValue}));
+                exportedUserName = this.state.userName;
+              }}
             />
             <br/>
             <TextField
