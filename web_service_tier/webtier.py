@@ -61,6 +61,32 @@ def average():
     bd_response = requests.get('http://localhost:8080/average', params={'date_from' : date_from, 'date_to' : date_to})
     return bd_response.text
 
+@app.route('/positions', methods=['GET'])
+def positions():
+    dealer_id = request.args.get('dealer_id')
+    user_id = request.args.get('user_id')
+
+    # if user_id not in userList:
+    #    return "Unknown user"
+
+    # TODO: check roles
+
+    bd_response = requests.get('http://localhost:8080/positions', params={'dealer_id' : dealer_id})
+    return bd_response.text
+
+@app.route('/realised_pnl', methods=['GET'])
+def realised_pnl():
+    dealer_id = request.args.get('dealer_id')
+    user_id = request.args.get('user_id')
+
+    # if user_id not in userList:
+    #    return "Unknown user"
+
+    # TODO: check roles
+
+    bd_response = requests.get('http://localhost:8080/realised_pnl', params={'dealer_id' : dealer_id})
+    return bd_response.text
+
 def get_message():
     """this could be any function that blocks until data is ready"""
     time.sleep(1.0)
