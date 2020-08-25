@@ -10,6 +10,9 @@ const EffectiveProfit = () => {
         "user_id": exportedUserName,
         "dealer_id": dealer
     }
+    const handleChange =(e) =>{
+        setDealer(e.target.value);
+    }
     
     async function handleClick() {
         const response =
@@ -24,7 +27,7 @@ const EffectiveProfit = () => {
         <button className="pure-button" onClick={handleClick}>See Effective Profit</button>
         <label htmlFor="cars">Choose a car:</label>
 
-        <select name="cars" id="cars">
+        <select onChange={handleChange} name="cars" id="cars">
         <option value="701">Lewis</option>
         <option value="702">Selvyn</option>
         <option value="703">Richard</option>
