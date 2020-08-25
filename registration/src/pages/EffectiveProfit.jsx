@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {exportedUserName} from "./Login"
+import {exportedUserName} from "./Login";
+import axios from 'axios';
 
-const EndingPositions = () => {
+const EffectiveProfit = () => {
     const [data, setData] = useState('');
     const creds = {
         "user_id": exportedUserName
@@ -38,7 +39,6 @@ const EndingPositions = () => {
         </table>
         </>
 
-
-        </>
     )
 }
+export default EffectiveProfit
