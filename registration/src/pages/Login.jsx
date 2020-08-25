@@ -46,7 +46,7 @@ class Login extends Component {
 
 render() {
     return (
-      <div >
+      <div className={styles.loginFrame}>
         <MuiThemeProvider>
 
           <div className={styles.loginFrame}>
@@ -54,8 +54,8 @@ render() {
               hintText="Enter your Username"
               floatingLabelText="Username"
               onChange = {(event,newValue) => {
-                this.setState({username:newValue});
-                //exportedUserName = this.state.username;
+                this.setState(state => ({username:newValue}));
+                exportedUserName = this.state.userName;
               }}
             />
             <br/>
