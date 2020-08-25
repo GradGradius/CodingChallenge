@@ -59,7 +59,7 @@ def average():
     date_to = request.args.get('date_to')
     
     cursor = mysql.connection.cursor()
-    query = '''select deal_instrument_id, deal_type, sum(deal_amount * deal_quantity) / sum(deal_quantity) as average
+    query = '''select deal_instrument_id, deal_type, round(sum(deal_amount * deal_quantity) / sum(deal_quantity), 4) as average
     from deal
     where DATE(deal_time) between DATE("{0}") and DATE("{1}")
     group by deal_instrument_id, deal_type
@@ -105,7 +105,7 @@ def realised_pnl(dealer = None):
     dealer_id = request.args.get('dealer_id')
     
     cursor = mysql.connection.cursor()
-    query = '''select buy.deal_instrument_id, sum(buy.deal_quantity * buy.deal_amount) - sell.quan as realised_PnL from deal as buy
+    query = '''select buy.deal_instrument_id, round(sum(buy.deal_quantity * buy.deal_amount) - sell.quan, 2) as realised_PnL from deal as buy
                 join (
                     select sum(deal_quantity * deal_amount) as quan, deal_instrument_id from deal
                     where deal_type = 'S'
@@ -148,7 +148,7 @@ order by tm.deal_instrument_id;'''.format(dealer_id)
     res = []
 
     for i in range(len(bal)):
-        res.append({"dealer_instrument_id" : bal[i]['deal_instrument_id'], "effective_pnl" : float(bal[i]['realised_PnL']) - float(pos[i]['position']) * float(price[i]['price'])})
+        res.append({"dealer_instrument_id" : bal[i]['deal_instrument_id'], "effective_pnl" : round(float(bal[i]['realised_PnL']) - float(pos[i]['position']) * float(price[i]['price']), 2)})
 
     if cursor.rowcount == 0:
         return jsonify(-1)
