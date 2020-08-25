@@ -147,7 +147,7 @@ order by tm.deal_instrument_id;'''.format(dealer_id)
     res = []
 
     for i in range(len(bal)):
-        res.append({bal[i]['deal_instrument_id'] : float(bal[i]['realised_PnL']) - float(pos[i]['position']) * float(price[i]['price'])})
+        res.append({"dealer_instrument_id" : bal[i]['deal_instrument_id'], "effective_pnl" : float(bal[i]['realised_PnL']) - float(pos[i]['position']) * float(price[i]['price'])})
 
     if cursor.rowcount == 0:
         return jsonify(-1)
