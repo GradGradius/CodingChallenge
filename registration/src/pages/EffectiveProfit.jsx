@@ -8,7 +8,7 @@ const EffectiveProfit = () => {
     const [dealer, setDealer] = useState(701)
     const creds = {
         "user_id": exportedUserName,
-        "delaer_id": dealer
+        "dealer_id": dealer
     }
     
     async function handleClick() {
@@ -25,10 +25,12 @@ const EffectiveProfit = () => {
         <label htmlFor="cars">Choose a car:</label>
 
         <select name="cars" id="cars">
-        <option value="701">701</option>
-        <option value="saab">Saab</option>
-        <option value="mercedes">Mercedes</option>
-        <option value="audi">Audi</option>
+        <option value="701">Lewis</option>
+        <option value="702">Selvyn</option>
+        <option value="703">Richard</option>
+        <option value="704">Lina</option>
+        <option value="705">John</option>
+        <option value="706">Nidia</option>
         </select>
         <table className="pure-table">
         <thead>
@@ -39,7 +41,7 @@ const EffectiveProfit = () => {
         </tr>
         </thead>
         <tbody>
-        { {data.map(el => {
+        {data.map(el => {
             return(
             <tr>
                 <th>{el.dealer_id}</th>
@@ -47,7 +49,7 @@ const EffectiveProfit = () => {
                 <th>{el.dealer_instrument_id}</th>
             </tr>
             )
-        })} }
+        })} 
         </tbody>
         </table>
         </div>
