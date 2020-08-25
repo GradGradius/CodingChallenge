@@ -22,7 +22,7 @@ const RealisedProfit = () => {
   }
     const sum = data.reduce((acc,el) => acc+Number(el.realised_PnL),0)
     return (
-        <div className={styles.tablebox}>
+        <div className={styles.tablebox}><br />
         <button className="pure-button" onClick={handleClick}>See Realised Profit</button>
         <label htmlFor="cars">Choose your Fighter:</label>
 
@@ -33,7 +33,7 @@ const RealisedProfit = () => {
         <option value="704">Lina</option>
         <option value="705">John</option>
         <option value="706">Nidia</option>
-        </select>
+        </select><br />
         <table className="pure-table">
         <thead>
         <tr>
@@ -52,7 +52,7 @@ const RealisedProfit = () => {
         })}
         </tbody>
         </table>
-    <div>Total: {Math.round(sum,-2)}</div>
+    <div>Total: {sum.toFixed(2)}</div>
         </div>
     )
 }

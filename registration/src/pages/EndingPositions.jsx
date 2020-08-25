@@ -22,7 +22,7 @@ const EndingPositions = () => {
   }
 
     return (
-        <div className={styles.tablebox}> 
+        <div className={styles.tablebox}> <br />
         <button className="pure-button"onClick={handleClick}>See Ending Positions</button>
         <label htmlFor="cars">Choose your Fighter:</label>
 
@@ -33,7 +33,7 @@ const EndingPositions = () => {
         <option value="704">Lina</option>
         <option value="705">John</option>
         <option value="706">Nidia</option>
-        </select>
+        </select><br />
         <table className="pure-table">
         <thead>
         <tr>

@@ -31,7 +31,7 @@ const AveragePrices = () => {
     }
 
     return (
-      <div className={styles.tablebox}>
+      <div className={styles.tablebox}><br />
     <label htmlFor="start">Start date:</label>
     <input onChange={handleStartDateChange} type="date" id="start" 
        value={startDate}
@@ -42,7 +42,7 @@ const AveragePrices = () => {
        value={endDate}
        min="2010-01-01" max="2022-08-25"/>
     <button className="pure-button" onClick={handleClick}>See Average Prices</button>
-
+    <br />
     <table className="pure-table">
     <thead>
     <tr>

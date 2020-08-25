@@ -23,7 +23,7 @@ const EffectiveProfit = () => {
   }
   const sum = data.reduce((acc,el) => acc+Number(el.effective_pnl),0)
     return (
-        <div className={styles.tablebox}>
+        <div className={styles.tablebox}><br />
         <button className="pure-button" onClick={handleClick}>See Effective Profit</button>
         <label htmlFor="cars">Choose your Fighter:</label>
 
@@ -35,6 +35,7 @@ const EffectiveProfit = () => {
         <option value="705">John</option>
         <option value="706">Nidia</option>
         </select>
+        <br />
         <table className="pure-table">
         <thead>
         <tr>
@@ -53,7 +54,7 @@ const EffectiveProfit = () => {
         })} 
         </tbody>
         </table>
-        <div>Total:{Math.round(sum,-2)}</div>
+        <div>Total:{sum.toFixed(2)}</div>
         </div>
 
     )
