@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {exportedUserName} from "./Login"
+import axios from 'axios'
 
-const EndingPositions = () => {
+const RealisedProfit = () => {
     const [data, setData] = useState('');
     const creds = {
         "user_id": exportedUserName
@@ -36,3 +37,5 @@ const EndingPositions = () => {
         </>
     )
 }
+
+export default RealisedProfit;

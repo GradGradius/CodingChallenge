@@ -4,9 +4,9 @@ import './App.css';
 import Cookies from 'js-cookie';
 import AuthApi from './contexts/AuthApi';
 import Login from './pages/Login';
-import Dataflow from './pages/Dataflow';
 import CheckBox from './pages/AveragePrices'
 import AveragePrices from './pages/AveragePrices';
+import {NavBar} from './pages/NavBar'
 
 
 function App() {
@@ -27,17 +27,22 @@ class Routes extends Component{
   static contextType = AuthApi;
   render() {
     return (
+      <>
+      <NavBar/>
       <Switch>
           <ProtectedLogin path="/login" component={Login} auth={this.context.auth}/>
           <ProtectedRoute path="/average" component={AveragePrices} auth={this.context.auth}/>
           <Redirect path="/" to="/average"/>
       </Switch>
+      </>
     )
   }
 }
 
 const ProtectedRoute = ({auth, component:Component, ...rest}) => {
   return(
+    <>
+
     <Route 
       {... rest}
       render ={()=>auth ? (
@@ -45,7 +50,8 @@ const ProtectedRoute = ({auth, component:Component, ...rest}) => {
       ): (
         <Redirect to="/login"/>
       )}
-    />)
+    />
+    </>)
 }
 
 const ProtectedLogin = ({auth, component:Component, ...rest}) => {

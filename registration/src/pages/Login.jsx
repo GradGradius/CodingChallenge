@@ -46,11 +46,10 @@ class Login extends Component {
 
 render() {
     return (
-      <div className={styles.loginFrame}>
+      <div >
         <MuiThemeProvider>
 
-          <div>
-            <AppBar title="Login"/>
+          <div className={styles.loginFrame}>
             <TextField
               hintText="Enter your Username"
               floatingLabelText="Username"

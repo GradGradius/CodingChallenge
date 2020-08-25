@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {exportedUserName} from "./Login"
+import axios from 'axios'
 
 const EndingPositions = () => {
     const [data, setData] = useState('');
@@ -37,7 +38,7 @@ const EndingPositions = () => {
         </table>
         </>
 
-
-        </>
     )
 }
+
+export default EndingPositions;

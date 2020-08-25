@@ -4,7 +4,7 @@ import axios from 'axios'
 
 
 const AveragePrices = () => {
-    const [data, setData] = useState(mockedData.data);
+    const [data, setData] = useState([]);
     const [startDate, setStartDate] = useState(Date.now());
     const [endDate, setEndDate] = useState(Date.now());
 
