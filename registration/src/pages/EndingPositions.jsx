@@ -16,6 +16,7 @@ const EndingPositions = () => {
 
     return (
         <>
+        <button onClick={handleClick}>See Ending Positions</button>
         <table>
         <tbody>
         <tr>

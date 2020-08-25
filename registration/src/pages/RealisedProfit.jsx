@@ -16,6 +16,7 @@ const EndingPositions = () => {
 
     return (
         <>
+        <button onClick={handleClick}>See Realised Profit</button>
         <table>
         <tbody>
         <tr>

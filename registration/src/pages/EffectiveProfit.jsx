@@ -6,6 +6,7 @@ const EndingPositions = () => {
     const creds = {
         "user_id": exportedUserName
     }
+    
     async function handleClick() {
         const response =
         await axios.get("http://localhost:5000/effective-loss", { params : creds }
@@ -16,6 +17,7 @@ const EndingPositions = () => {
 
     return (
         <>
+        <button onClick={handleClick}>See Effective Profit</button>
         <table>
         <tbody>
         <tr>
