@@ -15,7 +15,7 @@ const RealisedProfit = () => {
     }
     async function handleClick() {
         const response =
-        await axios.get("http://localhost:5000/realised-profit", { params : creds }
+        await axios.get("http://localhost:5000/realised_pnl", { params : creds }
         );
         console.log(response.data);
         setData(response.data);
@@ -45,8 +45,8 @@ const RealisedProfit = () => {
         {data.map(el => {
             return(
             <tr>
-                <th>{el.dealer_id}</th>
-                <th>{el.realised_pnl}</th>
+                <th>{el.deal_instrument_id}</th>
+                <th>{el.realised_PnL}</th>
             </tr>
             )
         })}

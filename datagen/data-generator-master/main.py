@@ -1,3 +1,4 @@
+import json
 from flask import Flask, Response, request, jsonify
 from flask_mysqldb import MySQL
 from flask_cors import CORS
@@ -58,10 +59,11 @@ def average():
     date_to = request.args.get('date_to')
     
     cursor = mysql.connection.cursor()
-    query = '''select deal_instrument_id, deal_type, sum(deal_amount * deal_quantity) / sum(deal_quantity) as average
+    query = '''select deal_instrument_id, deal_type, round(sum(deal_amount * deal_quantity) / sum(deal_quantity), 4) as average
     from deal
     where DATE(deal_time) between DATE("{0}") and DATE("{1}")
-    group by deal_instrument_id, deal_type'''.format(date_from, date_to)
+    group by deal_instrument_id, deal_type
+    order by deal_instrument_id'''.format(date_from, date_to)
 
     cursor.execute(query)
     r = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
@@ -103,7 +105,7 @@ def realised_pnl(dealer = None):
     dealer_id = request.args.get('dealer_id')
     
     cursor = mysql.connection.cursor()
-    query = '''select buy.deal_instrument_id, sum(buy.deal_quantity * buy.deal_amount) - sell.quan as realised_PnL from deal as buy
+    query = '''select buy.deal_instrument_id, round(sum(buy.deal_quantity * buy.deal_amount) - sell.quan, 2) as realised_PnL from deal as buy
                 join (
                     select sum(deal_quantity * deal_amount) as quan, deal_instrument_id from deal
                     where deal_type = 'S'
@@ -128,17 +130,29 @@ def realised_pnl(dealer = None):
 @app.route('/effective_pnl', methods = ['GET'])
 def effective_pnl():
     dealer_id = request.args.get('dealer_id')
-    pos = positions(dealer_id)
-    bal = realised_pnl(dealer_id)
-
-    query = '''select tm.deal_instrument_id, tm.deal_time, tm.deal_amount as price from deal tm
+    pos = positions(dealer_id).get_json()
+    bal = realised_pnl(dealer_id).get_json()
+    cursor = mysql.connection.cursor()
+    query = '''select tm.deal_instrument_id, tm.deal_time, avg(tm.deal_amount) as price from deal tm
 join (
-	select distinct deal_instrument_id, max(deal_time) as time from deal
-    where deal_counterparty_id = 701
-    and deal_type = 'B'
+	select deal_instrument_id, max(deal_time) as time from deal
+    where deal_counterparty_id = {0}
     group by deal_instrument_id
-) pr on pr.deal_instrument_id = tm.deal_instrument_id and pr.time = tm.deal_time;'''
-    return 0
+) pr on pr.deal_instrument_id = tm.deal_instrument_id and pr.time = tm.deal_time
+group by tm.deal_instrument_id, tm.deal_time
+order by tm.deal_instrument_id;'''.format(dealer_id)
+    cursor.execute(query)
+    price = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
+    mysql.connection.commit()
+    cursor.close()
+    res = []
+
+    for i in range(len(bal)):
+        res.append({"dealer_instrument_id" : bal[i]['deal_instrument_id'], "effective_pnl" : round(float(bal[i]['realised_PnL']) - float(pos[i]['position']) * float(price[i]['price']), 2)})
+
+    if cursor.rowcount == 0:
+        return jsonify(-1)
+    return jsonify(res)
 
 
 

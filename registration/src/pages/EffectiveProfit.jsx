@@ -38,18 +38,16 @@ const EffectiveProfit = () => {
         <table className="pure-table">
         <thead>
         <tr>
-            <th>Dealer Name</th>
-            <th>Effective Profit/Loss</th>
             <th>Instrument</th>
+            <th>Effective Profit/Loss</th>
         </tr>
         </thead>
         <tbody>
         {data.map(el => {
             return(
             <tr>
-                <th>{el.dealer_id}</th>
-                <th>{el.effective_pnl}</th>
                 <th>{el.dealer_instrument_id}</th>
+                <th>{el.effective_pnl}</th>
             </tr>
             )
         })} 
