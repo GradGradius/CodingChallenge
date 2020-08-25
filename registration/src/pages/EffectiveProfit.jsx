@@ -16,7 +16,7 @@ const EffectiveProfit = () => {
     
     async function handleClick() {
         const response =
-        await axios.get("http://localhost:5000/effective-loss", { params : creds }
+        await axios.get("http://localhost:5000/effective_pnl", { params : creds }
         );
         console.log(response.data);
         setData(response.data);
@@ -25,7 +25,7 @@ const EffectiveProfit = () => {
     return (
         <div className={styles.tablebox}>
         <button className="pure-button" onClick={handleClick}>See Effective Profit</button>
-        <label htmlFor="cars">Choose a car:</label>
+        <label htmlFor="cars">Choose your Fighter:</label>
 
         <select onChange={handleChange} name="cars" id="cars">
         <option value="701">Lewis</option>
