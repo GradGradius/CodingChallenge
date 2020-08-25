@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {exportedUserName} from './Login'
 import axios from 'axios'
+import styles from './tablebox.module.css'
 
 
 const AveragePrices = () => {
@@ -30,7 +31,7 @@ const AveragePrices = () => {
     }
 
     return (
-    <>
+      <div className={styles.tablebox}>
     <label htmlFor="start">Start date:</label>
     <input onChange={handleStartDateChange} type="date" id="start" 
        value={startDate}
@@ -40,15 +41,17 @@ const AveragePrices = () => {
     <input onChange={handleEndDateChange} type="date" id="end" 
        value={endDate}
        min="2010-01-01" max="2022-08-25"/>
-    <button onClick={handleClick}>See Average Prices</button>
+    <button className="pure-button" onClick={handleClick}>See Average Prices</button>
 
-    <table>
-    <tbody>
+    <table className="pure-table">
+    <thead>
     <tr>
       <th>Instrument</th>
       <th>Type of deal</th>
       <th>Average Price</th>
     </tr>
+    </thead>
+    <tbody>
     {data.map(el => {
       return(
         <tr>
@@ -60,7 +63,7 @@ const AveragePrices = () => {
     })}
     </tbody>
     </table>
-    </>
+    </div>
 
     )
     

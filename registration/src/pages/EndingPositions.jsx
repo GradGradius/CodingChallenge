@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {exportedUserName} from "./Login";
 import axios from 'axios';
+import styles from './tablebox.module.css'
 
 const EndingPositions = () => {
     const [data, setData] = useState('');
@@ -16,16 +17,18 @@ const EndingPositions = () => {
   }
 
     return (
-        <>
-        <button onClick={handleClick}>See Ending Positions</button>
-        <table>
-        <tbody>
+        <div className={styles.tablebox}>
+        <button className="pure-button"onClick={handleClick}>See Ending Positions</button>
+        <table className="pure-table">
+        <thead>
         <tr>
             <th>Dealer Name</th>
             <th>Positions</th>
             <th>Instrument</th>
         </tr>
-        {data.map(el => {
+        </thead>
+        <tbody>
+        {/* {data.map(el => {
             return(
             <tr>
                 <th>{el.dealer_id}</th>
@@ -33,10 +36,10 @@ const EndingPositions = () => {
                 <th>{el.dealer_instrument_id}</th>
             </tr>
             )
-        })}
+        })} */}
         </tbody>
         </table>
-        </>
+        </div>
 
     )
 }

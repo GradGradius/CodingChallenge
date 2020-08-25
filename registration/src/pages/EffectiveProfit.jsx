@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {exportedUserName} from "./Login";
 import axios from 'axios';
+import styles from './tablebox.module.css'
 
 const EffectiveProfit = () => {
     const [data, setData] = useState('');
@@ -17,16 +18,18 @@ const EffectiveProfit = () => {
   }
 
     return (
-        <>
-        <button onClick={handleClick}>See Effective Profit</button>
-        <table>
-        <tbody>
+        <div className={styles.tablebox}>
+        <button className="pure-button" onClick={handleClick}>See Effective Profit</button>
+        <table className="pure-table">
+        <thead>
         <tr>
             <th>Dealer Name</th>
             <th>Effective Profit/Loss</th>
             <th>Instrument</th>
         </tr>
-        {data.map(el => {
+        </thead>
+        <tbody>
+        {/* {data.map(el => {
             return(
             <tr>
                 <th>{el.dealer_id}</th>
@@ -34,10 +37,10 @@ const EffectiveProfit = () => {
                 <th>{el.dealer_instrument_id}</th>
             </tr>
             )
-        })}
+        })} */}
         </tbody>
         </table>
-        </>
+        </div>
 
     )
 }

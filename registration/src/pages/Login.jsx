@@ -66,7 +66,7 @@ render() {
               onChange = {(event,newValue) => this.setState({password:newValue})}
             />
             <br/>
-            <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+            <button className="pure-button" label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}> Submit </button>
          </div>
 
 

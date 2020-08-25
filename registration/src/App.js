@@ -17,12 +17,14 @@ function App() {
     const [auth,setAuth] = React.useState(false);
 
     return (
-
+      <>
        <AuthApi.Provider value={{auth,setAuth}}>
          <Router>
+         <NavBar/>
            <Routes/>
          </Router>
        </AuthApi.Provider>
+       </>
     );
   
 }
@@ -32,7 +34,6 @@ class Routes extends Component{
   render() {
     return (
       <>
-      <NavBar/>
       <Switch>
           <ProtectedLogin path="/login" component={Login} auth={this.context.auth}/>
           <ProtectedRoute path="/average" component={AveragePrices} auth={this.context.auth}/>
