@@ -20,7 +20,7 @@ const RealisedProfit = () => {
         console.log(response.data);
         setData(response.data);
   }
-    const sum = data.reduce((acc,el) => acc+(+el.realised_pnl))
+    const sum = data.reduce((acc,el) => acc+Number(el.realised_PnL),0)
     return (
         <div className={styles.tablebox}>
         <button className="pure-button" onClick={handleClick}>See Realised Profit</button>
@@ -52,7 +52,7 @@ const RealisedProfit = () => {
         })}
         </tbody>
         </table>
-    <div>Total: {sum}</div>
+    <div>Total: {Math.round(sum,-2)}</div>
         </div>
     )
 }

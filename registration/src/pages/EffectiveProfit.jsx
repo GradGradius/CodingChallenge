@@ -21,7 +21,7 @@ const EffectiveProfit = () => {
         console.log(response.data);
         setData(response.data);
   }
-  const sum = data.reduce((acc,el) => acc+(+el.realised_pnl))
+  const sum = data.reduce((acc,el) => acc+Number(el.effective_pnl),0)
     return (
         <div className={styles.tablebox}>
         <button className="pure-button" onClick={handleClick}>See Effective Profit</button>
@@ -53,7 +53,7 @@ const EffectiveProfit = () => {
         })} 
         </tbody>
         </table>
-        <div>Total:{sum}</div>
+        <div>Total:{Math.round(sum,-2)}</div>
         </div>
 
     )
