@@ -62,7 +62,8 @@ def average():
     query = '''select deal_instrument_id, deal_type, sum(deal_amount * deal_quantity) / sum(deal_quantity) as average
     from deal
     where DATE(deal_time) between DATE("{0}") and DATE("{1}")
-    group by deal_instrument_id, deal_type'''.format(date_from, date_to)
+    group by deal_instrument_id, deal_type
+    order by deal_instrument_id'''.format(date_from, date_to)
 
     cursor.execute(query)
     r = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]

@@ -4,7 +4,7 @@ import axios from 'axios'
 import styles from './tablebox.module.css'
 
 const RealisedProfit = () => {
-    const [data, setData] = useState('');
+    const [data, setData] = useState([]);
     const [dealer, setDealer] = useState(701)
     const creds = {
         "user_id": exportedUserName,
@@ -45,8 +45,8 @@ const RealisedProfit = () => {
         {data.map(el => {
             return(
             <tr>
-                <th>{el.dealer_id}</th>
-                <th>{el.realised_pnl}</th>
+                <th>{el.deal_instrument_id}</th>
+                <th>{el.realised_PnL}</th>
             </tr>
             )
         })}
