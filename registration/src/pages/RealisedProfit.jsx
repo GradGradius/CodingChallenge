@@ -4,7 +4,7 @@ import axios from 'axios'
 import styles from './tablebox.module.css'
 
 const RealisedProfit = () => {
-    const [data, setData] = useState('');
+    const [data, setData] = useState([]);
     const [dealer, setDealer] = useState(701)
     const creds = {
         "user_id": exportedUserName,
@@ -20,7 +20,7 @@ const RealisedProfit = () => {
         console.log(response.data);
         setData(response.data);
   }
-
+    const sum = data.reduce((acc,el) => acc+(+el.realised_pnl))
     return (
         <div className={styles.tablebox}>
         <button className="pure-button" onClick={handleClick}>See Realised Profit</button>
@@ -52,6 +52,7 @@ const RealisedProfit = () => {
         })}
         </tbody>
         </table>
+    <div>Total: {sum}</div>
         </div>
     )
 }
