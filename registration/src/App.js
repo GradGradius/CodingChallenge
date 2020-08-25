@@ -7,6 +7,10 @@ import Login from './pages/Login';
 import CheckBox from './pages/AveragePrices'
 import AveragePrices from './pages/AveragePrices';
 import {NavBar} from './pages/NavBar'
+import EndingPositions from './pages/EndingPositions';
+import EffectiveProfit from './pages/EffectiveProfit';
+import RealisedProfit from './pages/RealisedProfit';
+
 
 
 function App() {
@@ -32,6 +36,9 @@ class Routes extends Component{
       <Switch>
           <ProtectedLogin path="/login" component={Login} auth={this.context.auth}/>
           <ProtectedRoute path="/average" component={AveragePrices} auth={this.context.auth}/>
+          <ProtectedRoute path="/effectiveprofit" component={EffectiveProfit} auth={this.context.auth}/>
+          <ProtectedRoute path="/positions" component={EndingPositions} auth={this.context.auth}/>
+          <ProtectedRoute path="/realisedprofit" component={RealisedProfit} auth={this.context.auth}/>
           <Redirect path="/" to="/average"/>
       </Switch>
       </>

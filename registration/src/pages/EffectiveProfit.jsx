@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {exportedUserName} from "./Login"
-import axios from 'axios'
+import {exportedUserName} from "./Login";
+import axios from 'axios';
 
 const EffectiveProfit = () => {
     const [data, setData] = useState('');
