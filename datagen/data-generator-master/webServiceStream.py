@@ -5,6 +5,7 @@ import numpy, random
 from datetime import datetime, timedelta
 import json
 from RandomDealData import *
+from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 CORS(app)
@@ -42,10 +43,26 @@ def sse_stream():
     theHeaders = {"X-Accel-Buffering": "False"}
     rdd = RandomDealData()
     instrList = rdd.createInstrumentList()
+    cursor = mysql.connection.cursor()
     def eventStream():
         while True:
             #nonlocal instrList
-            yield 'data:{}\n\n'.format(rdd.createRandomData(instrList))
+            #res = 'data:{}\n\n'.format(rdd.createRandomData(instrList))
+            res = rdd.createRandomData(instrList)
+            print("TYPE:", res)
+            cursor.execute("INSERT IGNORE INTO instrument('instrument_name') VALUES(\"{0}\")".format(res["instrumentName"]))
+            mysql.connection.commit() 
+            cursor.execute("INSERT IGNORE INTO counterparty('counterparty_name') VALUES({0})".format(res["cpty"]))
+            mysql.connection.commit() 
+            query = '''INSERT INTO deal("deal_time", "deal_counterparty_id", "deal_instrument_id", "deal_type", "deal_amount", "deal_quantity") 
+            VALUES({0}, 
+            (select counterparty_id from counterparty where counterparty_name = {1}),
+            (select instrument_id from instrument where instrument_name = {2}),
+            {3},{4},{5})".format(res['time'], res['instrumentName'], res['cpty'], res['type'], res['price'], res['quantity'])'''
+            cursor.execute(query)
+            mysql.connection.commit()    
+            yield res
+        cursor.close()
     resp = Response(eventStream(), status=200, mimetype="text/event-stream")
     resp.headers["X-Accel-Buffering"] = "False"
     return resp

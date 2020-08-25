@@ -10,7 +10,7 @@ const RealisedProfit = () => {
     }
     async function handleClick() {
         const response =
-        await axios.get("http://localhost:5000/realised-profit", { params : creds }
+        await axios.get("http://localhost:5000/realised_pnl", { params : creds }
         );
         console.log(response.data);
         setData(response.data);

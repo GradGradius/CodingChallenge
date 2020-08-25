@@ -87,6 +87,30 @@ def realised_pnl():
     bd_response = requests.get('http://localhost:8080/realised_pnl', params={'dealer_id' : dealer_id})
     return bd_response.text
 
+@app.route('/effective_pnl', methods=['GET'])
+def effective_pnl():
+    dealer_id = request.args.get('dealer_id')
+    user_id = request.args.get('user_id')
+
+    # if user_id not in userList:
+    #    return "Unknown user"
+
+    # TODO: check roles
+
+    bd_response = requests.get('http://localhost:8080/effective_pnl', params={'dealer_id' : dealer_id})
+    return bd_response.text
+
+@app.route('/deals/sse')
+def forwardStreamSse():
+    r = requests.get('http://localhost:8080/streamTest/sse', stream=True)
+
+    def eventStream():
+        for line in r.iter_lines(chunk_size=1):
+            if line:
+                yield 'data:{}\n\n'.format(line.decode())
+
+    return Response(eventStream(), mimetype="text/event-stream")
+
 def get_message():
     """this could be any function that blocks until data is ready"""
     time.sleep(1.0)

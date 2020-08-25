@@ -4,14 +4,14 @@ import axios from 'axios';
 import styles from './tablebox.module.css'
 
 const EffectiveProfit = () => {
-    const [data, setData] = useState('');
+    const [data, setData] = useState([]);
     const creds = {
         "user_id": exportedUserName
     }
     
     async function handleClick() {
         const response =
-        await axios.get("http://localhost:5000/effective-loss", { params : creds }
+        await axios.get("http://localhost:5000/effective_pnl", { params : creds }
         );
         console.log(response.data);
         setData(response.data);
@@ -29,7 +29,7 @@ const EffectiveProfit = () => {
         </tr>
         </thead>
         <tbody>
-        {/* {data.map(el => {
+        {data.map(el => {
             return(
             <tr>
                 <th>{el.dealer_id}</th>
@@ -37,7 +37,7 @@ const EffectiveProfit = () => {
                 <th>{el.dealer_instrument_id}</th>
             </tr>
             )
-        })} */}
+        })}
         </tbody>
         </table>
         </div>

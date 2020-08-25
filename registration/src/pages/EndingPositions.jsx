@@ -10,14 +10,14 @@ const EndingPositions = () => {
     }
     async function handleClick() {
         const response =
-        await axios.get("http://localhost:5000/ending-positions", { params : creds }
+        await axios.get("http://localhost:5000/positions", { params : creds }
         );
         console.log(response.data);
         setData(response.data);
   }
 
     return (
-        <div className={styles.tablebox}>
+        <div className={styles.tablebox}> 
         <button className="pure-button"onClick={handleClick}>See Ending Positions</button>
         <table className="pure-table">
         <thead>

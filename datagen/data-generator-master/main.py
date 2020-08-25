@@ -1,3 +1,4 @@
+import json
 from flask import Flask, Response, request, jsonify
 from flask_mysqldb import MySQL
 from flask_cors import CORS
@@ -128,17 +129,29 @@ def realised_pnl(dealer = None):
 @app.route('/effective_pnl', methods = ['GET'])
 def effective_pnl():
     dealer_id = request.args.get('dealer_id')
-    pos = positions(dealer_id)
-    bal = realised_pnl(dealer_id)
-
-    query = '''select tm.deal_instrument_id, tm.deal_time, tm.deal_amount as price from deal tm
+    pos = positions(dealer_id).get_json()
+    bal = realised_pnl(dealer_id).get_json()
+    cursor = mysql.connection.cursor()
+    query = '''select tm.deal_instrument_id, tm.deal_time, avg(tm.deal_amount) as price from deal tm
 join (
-	select distinct deal_instrument_id, max(deal_time) as time from deal
-    where deal_counterparty_id = 701
-    and deal_type = 'B'
+	select deal_instrument_id, max(deal_time) as time from deal
+    where deal_counterparty_id = {0}
     group by deal_instrument_id
-) pr on pr.deal_instrument_id = tm.deal_instrument_id and pr.time = tm.deal_time;'''
-    return 0
+) pr on pr.deal_instrument_id = tm.deal_instrument_id and pr.time = tm.deal_time
+group by tm.deal_instrument_id, tm.deal_time
+order by tm.deal_instrument_id;'''.format(dealer_id)
+    cursor.execute(query)
+    price = [dict((cursor.description[i][0], str(value)) for i, value in enumerate(row)) for row in cursor.fetchall()]
+    mysql.connection.commit()
+    cursor.close()
+    res = []
+
+    for i in range(len(bal)):
+        res.append({bal[i]['deal_instrument_id'] : float(bal[i]['realised_PnL']) - float(pos[i]['position']) * float(price[i]['price'])})
+
+    if cursor.rowcount == 0:
+        return jsonify(-1)
+    return jsonify(res)
 
 
 
